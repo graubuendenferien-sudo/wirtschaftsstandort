@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wirtschaftsstandort auf einen Blick</title>
+<style>
+/* GRF web fonts - zentral im Repository grf-fonts (GitHub Pages) */
+@font-face {
+  font-family: "CircularGraubuendenWeb";
+  src: url("https://graubuendenferien-sudo.github.io/grf-fonts/CirculargraubuendenWeb-Book.woff2") format("woff2");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "CircularGraubuendenWeb";
+  src: url("https://graubuendenferien-sudo.github.io/grf-fonts/CirculargraubuendenWeb-Bold.woff2") format("woff2");
+  font-weight: 600 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "TheMix";
+  src: url("https://graubuendenferien-sudo.github.io/grf-fonts/TheMix_500_.woff2") format("woff2");
+  font-weight: 400 500; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "TheMix";
+  src: url("https://graubuendenferien-sudo.github.io/grf-fonts/TheMix_700_.woff2") format("woff2");
+  font-weight: 600 700; font-style: normal; font-display: swap;
+}
+
+:root {
+  /* GRF Evolution Styleguide – Granit-Familie */
+  --granit: #79775F;
+  --grf-black: #191813;
+  --grf-black-80: #474642;
+  --font-circular: "CircularGraubuendenWeb", "Circular Std", "CircularStd", "DM Sans", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  --font-mix: "TheMix", "TheMixOsF", "TheMix Plain", "Alegreya Sans", "Gill Sans", "Trebuchet MS", sans-serif;
+}
+
+html, body { margin: 0; padding: 0; height: auto; }
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  font-family: var(--font-circular);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--grf-black);
+  background: #fff;
+  -webkit-text-size-adjust: 100%;
+}
+
+:focus-visible { outline: 2px solid #666450; outline-offset: 2px; }
+
+.wrap { max-width: 1160px; margin: 0 auto; padding: 24px 16px 32px; }
+
+/* Topline + Titel (Styleguide) */
+.page-intro { margin: 0 0 24px; }
+.topline {
+  margin: 0;
+  color: var(--grf-black);
+  font-family: var(--font-circular);
+  font-size: clamp(32px, 9vw, 40px);
+  font-weight: 700;
+  letter-spacing: -.02em;
+  line-height: 1.24;
+}
+.title {
+  margin: 2px 0 0;
+  color: var(--grf-black);
+  font-family: var(--font-mix);
+  font-size: clamp(30px, 8vw, 36px);
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.25;
+}
+
+/* Kennzahlen: Mobile eine Spalte, Zahl über der Beschriftung */
+.facts { display: grid; grid-template-columns: minmax(0, 1fr); column-gap: 48px; margin: 0; }
+.fact {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  padding: 16px 0 24px;
+}
+/* Trennlinie als Pseudo-Element, damit sie sich einzeichnen kann */
+.fact::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: var(--granit); transform-origin: left center; }
+.fact:nth-child(1) { --i: 0; }
+.fact:nth-child(2) { --i: 1; }
+.fact:nth-child(3) { --i: 2; }
+.fact:nth-child(4) { --i: 3; }
+.fact:nth-child(5) { --i: 4; }
+.fact:nth-child(6) { --i: 5; }
+.fact dt {
+  margin: 0;
+  font-size: 16px;
+  line-height: 24px;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+.fact dd {
+  order: -1;                       /* Zahl visuell oben, im Code bleibt die Beschriftung zuerst */
+  margin: 0;
+  font-family: var(--font-mix);
+  font-weight: 400;
+  font-size: clamp(36px, 10vw, 44px);
+  line-height: 1.15;
+  white-space: nowrap;
+}
+sup.ast { font-size: .5em; line-height: 0; vertical-align: super; margin-left: .05em; }
+
+.footnote { margin: 8px 0 0; font-size: 13px; line-height: 20px; color: var(--grf-black-80); }
+
+@media (min-width: 761px) {
+  .wrap { padding: 32px 24px 40px; }
+  .page-intro { margin-bottom: 32px; }
+  .topline { font-size: clamp(32px, 3.6vw, 42px); }
+  .title { font-size: clamp(32px, 3.5vw, 40px); }
+  .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(3, auto); grid-auto-flow: column; }
+  .fact dd { font-size: clamp(40px, 4.6vw, 56px); }
+  /* Zwei Spalten: Zeilen erscheinen gleichzeitig, links und rechts */
+  .fact:nth-child(4) { --i: 0; }
+  .fact:nth-child(5) { --i: 1; }
+  .fact:nth-child(6) { --i: 2; }
+}
+
+/* Variante B: Zahl immer oben, Einheiten kleiner */
+.unit { font-size: .5em; margin-left: .12em; }
+html[lang="en"] .unit-pct, html[lang="it"] .unit-pct { margin-left: .03em; }
+
+/* Eröffnungsanimation (nur ohne «reduzierte Bewegung»); Start-Zustand nur solange .anim gesetzt ist */
+@media (prefers-reduced-motion: no-preference) {
+  .anim .page-intro { opacity: 0; transform: translateY(12px); }
+  .anim .fact::before { transform: scaleX(0); }
+  .anim .fact dt { opacity: 0; transform: translateY(8px); }
+  .anim .fact dd { opacity: 0; transform: translateY(14px); }
+  .anim .footnote { opacity: 0; }
+  .go .page-intro { animation: rise .6s cubic-bezier(.2, .7, .2, 1) forwards; }
+  .go .fact::before { animation: line .9s cubic-bezier(.2, .8, .2, 1) forwards; animation-delay: calc(.35s + var(--i) * .14s); }
+  .go .fact dd { animation: rise .65s cubic-bezier(.2, .7, .2, 1) forwards; animation-delay: calc(.45s + var(--i) * .14s); }
+  .go .fact dt { animation: rise .6s cubic-bezier(.2, .7, .2, 1) forwards; animation-delay: calc(.6s + var(--i) * .14s); }
+  .go .footnote { animation: fade .6s ease forwards; animation-delay: 1.7s; }
+}
+@media (prefers-reduced-motion: no-preference) and (min-width: 761px) {
+  .go .footnote { animation-delay: 1.2s; }
+}
+@keyframes rise { to { opacity: 1; transform: none; } }
+@keyframes line { to { transform: scaleX(1); } }
+@keyframes fade { to { opacity: 1; } }
+</style>
+<noscript><style>
+.anim .page-intro, .anim .fact dt, .anim .fact dd, .anim .footnote { opacity: 1; transform: none; }
+.anim .fact::before { transform: none; }
+</style></noscript>
+</head>
+<body>
+<main class="wrap anim" id="app">
+
+  <header class="page-intro">
+    <p class="topline" data-i18n="topline">Auf einen Blick.</p>
+    <h1 class="title" data-i18n="title">Der Wirtschaftsstandort</h1>
+  </header>
+
+  <!-- Reihenfolge im Code = Reihenfolge am Handy; am Desktop links Zeile 1–3, rechts Zeile 4–6 -->
+  <dl class="facts">
+    <div class="fact">
+      <dt data-i18n="einzug">Menschen im Einzugsgebiet von einer Fahrstunde</dt>
+      <dd><span class="count" data-key="einzugsgebiet" data-to="1.4" data-dec="1">1.4</span><span class="unit" data-i18n="mio">Mio.</span></dd>
+    </div>
+    <div class="fact">
+      <dt data-i18n-html="erwerb">Erwerbstätige im Kanton (<span data-key="jahr">2024</span>)</dt>
+      <dd><span class="count" data-key="erwerbstaetige" data-to="110000" data-dec="0">110’000</span></dd>
+    </div>
+    <div class="fact">
+      <dt data-i18n="steuersatz">Gewinnsteuersatz für Unternehmen</dt>
+      <dd><span class="count" data-key="steuersatz_max" data-to="14.77" data-dec="2">14.77</span>–<span class="count" data-key="steuersatz_min" data-to="7.83" data-dec="2">7.83</span><span class="unit unit-pct">%</span><sup class="ast">*</sup></dd>
+    </div>
+    <div class="fact">
+      <dt data-i18n="studierende">Anzahl Studierenden an Bündner Hochschulen</dt>
+      <dd><span class="count" data-key="studierende" data-to="2500" data-dec="0">2’500</span></dd>
+    </div>
+    <div class="fact">
+      <dt data-i18n="industrie">Verfügbare Industriefläche (m²)</dt>
+      <dd><span class="count" data-key="industrieflaeche" data-to="300000" data-dec="0">300’000</span></dd>
+    </div>
+    <div class="fact">
+      <dt data-i18n="erleichterung">Steuererleichterung auf Kantons- und Gemeindeebene bis zu</dt>
+      <dd><span class="count" data-key="steuererleichterung" data-to="100" data-dec="0" data-max="100">100</span><span class="unit unit-pct">%</span></dd>
+    </div>
+  </dl>
+
+  <p class="footnote" data-i18n-html="fussnote">*Gewinnsteuersatz bei <span data-key="steuererleichterung" data-max="100">100</span>&nbsp;% kantonaler Steuererleichterung</p>
+
+</main>
+
+<script>
+/* Sprache und Zahlen über die URL steuern, z. B. ?lang=fr&studierende=2600&jahr=2025
+   Sprache: lang=de|en|fr|it. Ohne Parameter wird die Sprache aus dem Pfad der einbettenden Seite
+   erkannt (/en/, /fr/, /it/), falls der Browser ihn weitergibt; sonst Deutsch.
+   Zahlen: einzugsgebiet (in Mio.), erwerbstaetige, steuersatz_max, steuersatz_min, studierende,
+   industrieflaeche, steuererleichterung (0–100), jahr (4 Ziffern).
+   Fehlende oder ungültige Werte bleiben beim Standardwert im HTML. */
+(function () {
+  var SUPPORTED = ['de', 'en', 'fr', 'it'];
+  var params = new URLSearchParams(window.location.search);
+
+  function detectLang() {
+    var p = (params.get('lang') || '').toLowerCase().slice(0, 2);
+    if (SUPPORTED.indexOf(p) !== -1) return p;
+    var m = (document.referrer || '').match(/^https?:\/\/[^\/]+\/(de|en|fr|it)(?:[\/?#]|$)/i);
+    if (m) return m[1].toLowerCase();
+    return 'de';
+  }
+  var lang = detectLang();
+
+  /* Zahlenformat je Sprache (Tausendertrennung, Dezimalzeichen, Prozentzeichen) */
+  var LOCALE = {
+    de: { th: '’',      dec: '.', pct: ' %' },
+    en: { th: ',',      dec: '.', pct: '%' },
+    fr: { th: ' ', dec: ',', pct: ' %' },
+    it: { th: '’',      dec: ',', pct: '%' }
+  };
+  var L = LOCALE[lang];
+
+  window.grfFmt = function (n, dec) {
+    var parts = n.toFixed(dec).split('.');
+    var int = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, L.th);
+    return dec ? int + L.dec + parts[1] : int;
+  };
+
+  /* Übersetzungen. {jahr} und {n} werden durch die (per URL steuerbaren) Werte ersetzt. */
+  var T = {
+    de: {
+      doc: 'Wirtschaftsstandort auf einen Blick',
+      topline: 'Auf einen Blick.',
+      title: 'Der Wirtschaftsstandort',
+      einzug: 'Menschen im Einzugsgebiet von einer Fahrstunde',
+      erwerb: 'Erwerbstätige im Kanton ({jahr})',
+      steuersatz: 'Gewinnsteuersatz für Unternehmen',
+      studierende: 'Anzahl Studierenden an Bündner Hochschulen',
+      industrie: 'Verfügbare Industriefläche (m²)',
+      erleichterung: 'Steuererleichterung auf Kantons- und Gemeindeebene bis zu',
+      fussnote: '*Gewinnsteuersatz bei {n} kantonaler Steuererleichterung',
+      mio: 'Mio.'
+    },
+    en: {
+      doc: 'The business location at a glance',
+      topline: 'At a glance.',
+      title: 'The business location',
+      einzug: 'People within a one-hour drive',
+      erwerb: 'Employed people in the canton ({jahr})',
+      steuersatz: 'Profit tax rate for companies',
+      studierende: 'Number of students at Graubünden universities',
+      industrie: 'Available industrial space (m²)',
+      erleichterung: 'Tax relief at cantonal and municipal level of up to',
+      fussnote: '*Profit tax rate with {n} cantonal tax relief',
+      mio: 'million'
+    },
+    fr: {
+      doc: 'Le site économique en un coup d’œil',
+      topline: 'En un coup d’œil.',
+      title: 'Le site économique',
+      einzug: 'Personnes dans la zone d’influence à une heure de route',
+      erwerb: 'Personnes actives dans le canton ({jahr})',
+      steuersatz: 'Taux d’imposition du bénéfice des entreprises',
+      studierende: 'Nombre d’étudiants dans les hautes écoles grisonnes',
+      industrie: 'Surface industrielle disponible (m²)',
+      erleichterung: 'Allégement fiscal aux niveaux cantonal et communal jusqu’à',
+      fussnote: '*Taux d’imposition du bénéfice avec {n} d’allégement fiscal cantonal',
+      mio: 'mio.'
+    },
+    it: {
+      doc: 'La piazza economica a colpo d’occhio',
+      topline: 'A colpo d’occhio.',
+      title: 'La piazza economica',
+      einzug: 'Persone nel bacino d’utenza a un’ora di auto',
+      erwerb: 'Persone occupate nel Cantone ({jahr})',
+      steuersatz: 'Aliquota d’imposta sull’utile per le imprese',
+      studierende: 'Numero di studenti nelle scuole universitarie grigionesi',
+      industrie: 'Superficie industriale disponibile (m²)',
+      erleichterung: 'Sgravio fiscale a livello cantonale e comunale fino al',
+      fussnote: '*Aliquota d’imposta sull’utile con sgravio fiscale cantonale del {n}',
+      mio: 'mio.'
+    }
+  }[lang];
+
+  document.documentElement.lang = lang;
+  document.title = T.doc;
+
+  function each(selector, fn) { Array.prototype.forEach.call(document.querySelectorAll(selector), fn); }
+
+  each('[data-i18n]', function (el) {
+    var s = T[el.getAttribute('data-i18n')];
+    if (s !== undefined) el.textContent = s;
+  });
+  each('[data-i18n-html]', function (el) {
+    var s = T[el.getAttribute('data-i18n-html')];
+    if (s === undefined) return;
+    el.innerHTML = s
+      .replace('{jahr}', '<span data-key="jahr">2024</span>')
+      .replace('{n}', '<span data-key="steuererleichterung" data-max="100">100</span>' + L.pct);
+  });
+
+  /* Zahlen aus der URL (oder Standardwerte) in Landesformat setzen */
+  function read(key) {
+    var raw = params.get(key);
+    if (raw === null) return null;
+    var clean = raw.replace(/[’'\s]/g, '').replace(',', '.');
+    return /^\d{1,9}(\.\d{1,3})?$/.test(clean) ? clean : null;
+  }
+  var values = {};
+  each('[data-key]', function (el) {
+    var key = el.getAttribute('data-key');
+    var clean = read(key);
+    var max = el.getAttribute('data-max');
+    if (clean !== null && max && parseFloat(clean) > parseFloat(max)) clean = null;
+    if (key === 'jahr') {
+      if (clean !== null && /^\d{4}$/.test(clean)) el.textContent = clean;
+      return;
+    }
+    var isCount = (' ' + el.className + ' ').indexOf(' count ') !== -1;
+    if (isCount) {
+      var defDec = parseInt(el.getAttribute('data-dec') || '0', 10);
+      var value = parseFloat(el.getAttribute('data-to'));
+      var dec = defDec;
+      if (clean !== null) {
+        value = parseFloat(clean);
+        var inDec = clean.indexOf('.') === -1 ? 0 : clean.split('.')[1].length;
+        dec = defDec === 0 ? 0 : Math.max(defDec, inDec);
+      }
+      el.setAttribute('data-to', value);
+      el.setAttribute('data-dec', dec);
+      el.textContent = window.grfFmt(value, dec);
+    } else if (clean !== null) {
+      el.textContent = window.grfFmt(Math.round(parseFloat(clean)), 0);
+    }
+    if (clean !== null) values[key] = parseFloat(clean);
+  });
+  if (window.console && values.steuersatz_min !== undefined && values.steuersatz_max !== undefined && values.steuersatz_min > values.steuersatz_max) {
+    console.warn('steuersatz_min ist grösser als steuersatz_max.');
+  }
+})();
+</script>
+<script>
+/* Eröffnungsanimation: Zahlen zählen hoch, Linien zeichnen sich ein. Die Endwerte stehen im HTML. */
+(function () {
+  var main = document.getElementById('app');
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!main || reduce) { if (main) main.className = 'wrap'; return; }
+
+  var counts = Array.prototype.slice.call(main.querySelectorAll('.count'));
+
+  var fmt = window.grfFmt;
+  function target(el) { return parseFloat(el.getAttribute('data-to')); }
+  function decimals(el) { return parseInt(el.getAttribute('data-dec') || '0', 10); }
+
+  counts.forEach(function (el) { el.textContent = fmt(0, decimals(el)); });
+
+  function countUp(el, delay) {
+    var to = target(el), dec = decimals(el), dur = 1300, s = null;
+    setTimeout(function () {
+      function step(t) {
+        if (s === null) s = t;
+        var p = Math.min(1, (t - s) / dur);
+        el.textContent = fmt(to * (1 - Math.pow(1 - p, 3)), dec);
+        if (p < 1) requestAnimationFrame(step); else el.textContent = fmt(to, dec);
+      }
+      requestAnimationFrame(step);
+    }, delay);
+  }
+
+  var started = false;
+  function start() {
+    if (started) return;
+    started = true;
+    main.className = 'wrap anim go';
+    var twoCols = window.matchMedia && window.matchMedia('(min-width: 761px)').matches;
+    Array.prototype.forEach.call(main.querySelectorAll('.fact'), function (fact, idx) {
+      var row = twoCols ? idx % 3 : idx;
+      Array.prototype.forEach.call(fact.querySelectorAll('.count'), function (el) {
+        countUp(el, 450 + row * 140);
+      });
+    });
+  }
+  /* Start, sobald die Schriften geladen sind (max. 700 ms warten) */
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(start);
+    setTimeout(start, 700);
+  } else {
+    start();
+  }
+})();
+</script>
+<script>
+/* ===== GRF Auto-Height Sender – NICHT VERÄNDERN ===== */
+(function () {
+  var lastHeight = 0, scheduled = false;
+  function getHeight() {
+    var b = document.body;
+    if (!b) return 0;
+    return Math.ceil(Math.max(b.scrollHeight, b.offsetHeight, b.getBoundingClientRect().height));
+  }
+  function send() {
+    scheduled = false;
+    var h = getHeight();
+    if (h > 0 && Math.abs(h - lastHeight) > 1) {   // nur echte Änderungen senden, kein Loop
+      lastHeight = h;
+      window.parent.postMessage({ height: h }, '*');
+    }
+  }
+  function schedule() {
+    if (scheduled) return;
+    scheduled = true;
+    (window.requestAnimationFrame || setTimeout)(send);
+  }
+  window.addEventListener('load', schedule);
+  window.addEventListener('resize', schedule);
+  window.addEventListener('orientationchange', function () { setTimeout(schedule, 300); });
+  document.addEventListener('click', function () { setTimeout(schedule, 100); }, true);
+  if (window.ResizeObserver) new ResizeObserver(schedule).observe(document.body);
+  if (window.MutationObserver) {
+    new MutationObserver(schedule).observe(document.body, {
+      childList: true, subtree: true, attributes: true, characterData: true
+    });
+  }
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(schedule);
+  [100, 500, 1500].forEach(function (t) { setTimeout(schedule, t); });
+  schedule();
+})();
+</script>
+</body>
+</html>
